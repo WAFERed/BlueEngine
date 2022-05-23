@@ -1,5 +1,5 @@
-# Release 0.7.3
-First release of python CLI package for blue-engine project.
+# BlueEngine
+Python CLI package for blue-engine project.
 
 <hr/>
 
