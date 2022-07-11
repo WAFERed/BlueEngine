@@ -3,7 +3,7 @@
 </p>
 
 # BlueEngine
-BlueEngine is the Python CLI package for the WAFER Project. The project serves as the brains of the project. All of the research, implementation, development, packaging and distribuution is done through this project's releases. The package itself is a python virual environment that can be installed or run locally as a command line interface utility.
+BlueEngine is the Python CLI package for the WAFER Project. The project serves as the brains of the project. All of the research, implementation, development, packaging and distribution is done through this project's releases. The package itself is a python virtual environment that can be installed or run locally as a command line interface utility.
 
 ## Getting Started
 To get this package, download it through releases or to get souruce code,
