@@ -1,4 +1,5 @@
 # Imports
+from xml.sax.handler import EntityResolver
 from PIL import Image
 import numpy
 import pandas
@@ -93,3 +94,10 @@ def getList(listOf):
         print(listDict[listOf])
     except:
         return
+
+# Calculate error of predictions made
+def calcError(predictpath, error):
+    DataFrame       = pandas.read_csv(predictpath)
+    PredictedValues = DataFrame.shape[0]
+    print(f"Cumulative Error for {PredictedValues} Predicted Vales: {PredictedValues * error}")
+    

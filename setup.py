@@ -8,7 +8,7 @@ def read_requirements():
 
 setup(
     name='blue',
-    version='0.7.3',
+    version='1.0.2',
     author='Syed Mustafa Ahmed, Talha Lodhi, Mohammad Ibrahim',
     author_email='syedmustafaahmad@gmail.com',
     long_description=open("README.md","rt").read(),

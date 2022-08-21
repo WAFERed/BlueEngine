@@ -138,3 +138,86 @@ def genNN(input, activator, optimizer, showTime, modelEpochs, modelMetric):
     if showTime == True:
         elapsed_time = et - st
         print('Benchmark time:', elapsed_time, 'seconds')
+
+
+def predictNN(trainx, futurex, output, activator, optimizer, modelepochs, metric):
+
+    # Get the start time
+    st = time.time()
+
+    # Parameters
+    fileName        = trainx
+    futurePath      = futurex
+    futureData      = pandas.read_csv(futurePath)
+    dataframe       = pandas.read_csv(fileName)
+    dataset         = dataframe.values
+    modelEpochs     = 300
+    lossCalc        = metric
+    metricsList     = [metric]
+    NNOptimizer     = optimizer
+    NNActivator     = activator
+    resultPath      = output
+    print('Parameters set successfully')
+
+    # NN Generation
+    model = Sequential()
+    model.add(Dense(46, input_dim = 23, kernel_initializer = 'normal', activation = NNActivator))
+    model.add(Dense(46, kernel_initializer = 'normal', activation = NNActivator))
+    model.add(Dense(46, kernel_initializer = 'normal', activation = NNActivator))
+    model.add(Dense(46, kernel_initializer = 'normal', activation = NNActivator))
+    model.add(Dense(46, kernel_initializer = 'normal', activation = NNActivator))
+    model.add(Dense(46, kernel_initializer = 'normal', activation = NNActivator))
+    model.add(Dense(46, kernel_initializer = 'normal', activation = NNActivator))
+    model.add(Dense(46, kernel_initializer = 'normal', activation = NNActivator))
+    model.add(Dense(46, kernel_initializer = 'normal', activation = NNActivator))
+    model.add(Dense(46, kernel_initializer = 'normal', activation = NNActivator))
+    model.add(Dense(46, kernel_initializer = 'normal', activation = NNActivator))
+    model.add(Dense(1, kernel_initializer = 'normal'))
+
+    # Compile model
+    model.compile(loss = lossCalc,
+                optimizer = NNOptimizer,
+                metrics = metricsList)
+
+    # Creating X and Y
+    X = dataframe.drop(dataframe.columns[[-1]], axis=1)
+    X = X.values
+    Y = dataframe['WET_Fixed']
+    Y = Y.values
+    Y = Y.reshape(-1,1)
+    print('X and Y seperated successfully')
+
+    # Split into input (X) and output (Y) variables
+    n_test = int(len(X)/2)
+
+    to_drop = range(0,n_test)
+    to_keep = range(n_test, len(X))
+    trainX = pandas.DataFrame(X)
+    trainX = trainX.drop(to_drop)
+    testX = pandas.DataFrame(X)
+    testX = testX.drop(to_keep)
+    trainY = pandas.DataFrame(Y)
+    trainY = trainY.drop(to_drop)
+    testY = pandas.DataFrame(Y)
+    testY = testY.drop(to_keep)
+    print('Data split successfully (trainX, trainY, testX, testY)')
+
+    # Fitting
+    modelFitted = model.fit(trainX, trainY, validation_data=(testX, testY), epochs=modelepochs, verbose=1)
+
+    # Evaluation
+    _, train_acc = model.evaluate(trainX, trainY, verbose=1)
+    _, test_acc = model.evaluate(testX, testY, verbose=1)
+    print('Train: %.3f, Test: %.3f' % (train_acc, test_acc))
+
+    # Saving Results
+    futureData = futureData.drop(futureData.columns[[0]], axis=1)
+    futureY = model.predict(futureData)
+    futureData['Prediciton'] = futureY
+    futureData.to_csv(output)
+
+    # Get the end time
+    et = time.time()
+
+    elapsed_time = et - st
+    print('Time to Predict:', elapsed_time, 'seconds')
